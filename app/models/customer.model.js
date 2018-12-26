@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const CustomerSchema = mongoose.Schema({
-  fistname: String,
+  firstname: String,
   lastname: String,
   age: { type: Number, min: 18, max: 65, required: true }
 })
