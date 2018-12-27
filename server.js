@@ -12,25 +12,22 @@ const Customer = require('./app/models/customer.model.js');
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url)
+mongoose.connect(dbConfig.url, {useNewUrlParser: true})
 .then(() => {
-    console.log("Successfully connected to MongoDB.");
+  console.log("Successfully connected to MongoDB.");
 
-    Customer.remove({}, function(err) {
+  Customer.deleteMany({}, function(err) {
 
-       if(err){
-          console.log(err);
-          process.exit();
-       }
-
-       console.log('Customer collection removed');
-       // -> initial new data
-       initial();
+     if(err){
+        console.log(err);
+        process.exit();
+     }
+     initial();
     });
 
 }).catch(err => {
-    console.log('Could not connect to MongoDB.');
-    process.exit();
+  console.log('Could not connect to MongoDB.');
+  process.exit();
 });
 
 const cors = require('cors')
@@ -59,46 +56,11 @@ function initial(){
         firstname: "Joe",
         lastname: "Thomas",
         age: 36
-      },
-      {
-        firstname: "Peter",
-        lastname: "Smith",
-        age: 18
-      },
-      {
-        firstname: "Lauren",
-        lastname: "Taylor",
-        age: 31
-      },
-      {
-        firstname: "Mary",
-        lastname: "Taylor",
-        age: 24
-      },
-      {
-        firstname: "David",
-        lastname: "Moore",
-        age: 25
-      },
-      {
-        firstname: "Holly",
-        lastname: "Davies",
-        age: 27
-      },
-      {
-        firstname: "Michael",
-        lastname: "Brown",
-        age: 45
       }
     ]
 
-    // Init data -> save to MongoDB
-
     for (let i = 0; i < customers.length; i++) {
       const customer = new Customer(customers[i]);
-      console.log('customers', customer);
       customer.save();
   }
-
-    console.log(">>> Done - Initial Data!");
 }

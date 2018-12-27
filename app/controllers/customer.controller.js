@@ -1,14 +1,18 @@
 const Customers = require('../models/customer.model.js');
 
 //POST a customer
-function create(req, res) {
+function createNewCustomer(req, res) {
   //Create a new customer
+  console.log('Da vaoo!!!');
   const customer = new Customers(req.body);
+  console.log(req.body);
 
   //Save a customer in the MongoDB
   customer.save()
   .then(data => {
     res.json(data)
+    console.log('Added successfully!!');
+    console.log(data);
   })
   .catch(err => {
     res.status(500).json({
@@ -33,11 +37,11 @@ function findAll(req, res) {
 
 //Fetch a single customer by ID
 function findOne(req, res) {
-  Customers.findById(req.params.customerId)
+  Customers.findById(req.params.customerID)
   .then(customer => {
     if(!customer) {
       return res.status(404).json({
-        msg: "Customer not found with ID: " + req.params.customerId
+        msg: "Customer not found with ID: " + req.params.customerID
       })
     }
     res.json(customer)
@@ -45,11 +49,11 @@ function findOne(req, res) {
   .catch(err => {
     if(err.kind === "ObjectID") {
       return res.status(404).json({
-        msg: "Customer not found with ID: " + req.params.customerId
+        msg: "Customer not found with ID: " + req.params.customerID
       })
     }
     return res.status(500).json({
-      msg: "Error retrieving customer with ID: " + req.params.customerId
+      msg: "Error retrieving customer with ID: " + req.params.customerID
     })
   })
 }
@@ -60,7 +64,7 @@ function updateCustomer(req, res) {
   .then(customer => {
     if(!customer){
       return res.status(404).json({
-        msg: "Customer not found with ID: " + req.params.customerId
+        msg: "Customer not found with ID: " + req.params.customerID
       })
     }
     res.json(customer)
@@ -68,22 +72,22 @@ function updateCustomer(req, res) {
   .catch(err => {
     if(err.kind === "ObjectId") {
       return res.status(404).json({
-        msg: "Customer not found with ID: " + req.params.customerId
+        msg: "Customer not found with ID: " + req.params.customerID
       })
     }
     return res.status(500).json({
-      msg: "Error updating customer with ID: " + req.params.customerId
+      msg: "Error updating customer with ID: " + req.params.customerID
     })
   })
 }
 
 //Delete a customer
 function deleteCustomer(req, res) {
-  Customers.findByIdAndRemove(req.params.customerId)
+  Customers.findByIdAndRemove(req.params.customerID)
   .then(customer => {
     if(!customer) {
       res.status(404).json({
-        msg: "Customer not found with ID: " + req.params.customerId
+        msg: "Customer not found with ID: " + req.params.customerID
       })
     }
     res.json({msg: "Customer deleted succesfully!"})
@@ -91,17 +95,17 @@ function deleteCustomer(req, res) {
   .catch(err => {
     if(err.kind === "ObjectId" || err.name === "NotFound") {
       return res.status(404).json({
-        msg: "Customer not found with id " + req.params.customerId
+        msg: "Customer not found with id " + req.params.customerID
       })
     }
     return res.status(500).json({
-      msg: "Coud not delete customer with ID: " + req.params.customerId
+      msg: "Coud not delete customer with ID: " + req.params.customerID
     })
   })
 };
 
 module.exports = {
-  create,
+  createNewCustomer,
   findAll,
   findOne,
   updateCustomer,

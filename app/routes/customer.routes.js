@@ -2,7 +2,7 @@ module.exports = function(app) {
   const customers = require('../controllers/customer.controller.js')
 
   //Create a new customer
-  app.post('/api/customers', customers.create)
+  app.post('/api/customers', customers.createNewCustomer)
 
   //Retrieve all customers
   app.get('/api/customers', customers.findAll)
